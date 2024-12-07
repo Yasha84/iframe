@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ランダム文字列でiframeを生成</title>
+    <script>
+        function generateRandomString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                result += characters[randomIndex];
+            }
+            return result;
+        }
+
+        function createIframes() {
+            const numberOfIframes = parseInt(document.getElementById('iframeCount').value) || 0; // 入力された個数を取得
+            const container = document.getElementById('iframeContainer');
+            container.innerHTML = ''; // 既存のiframeをクリア
+
+            if (numberOfIframes <= 0) {
+                alert('1以上の数を入力してください');
+                return;
+            }
+
+            for (let i = 0; i < numberOfIframes; i++) {
+                const iframe = document.createElement('iframe');
+                const randomString = generateRandomString(9); // 9文字のランダム文字列を生成
+                const iframeURL = 'https://d.kuku.lu/' + randomString; // ランダム文字列をURLに追加
+                iframe.src = iframeURL;
+                iframe.width = '300';
+                iframe.height = '200';
+                iframe.frameBorder = '0';
+
+                // iframeの下にリンクを表示
+                const link = document.createElement('a');
+                link.href = iframeURL;
+                link.target = '_blank';
+                link.textContent = iframeURL;
+
+                // iframeとリンクを個別に包むdivを作成し、flexboxを使って横並びに配置
+                const iframeWrapper = document.createElement('div');
+                iframeWrapper.style.display = 'flex';
+                iframeWrapper.style.flexDirection = 'column';
+                iframeWrapper.style.alignItems = 'center';
+                iframeWrapper.style.marginRight = '20px'; // iframe間にスペースを入れる
+
+                // iframeとリンクをwrapして追加
+                iframeWrapper.appendChild(iframe);
+                iframeWrapper.appendChild(link);
+
+                // 生成したiframeWrapperをコンテナに追加
+                container.appendChild(iframeWrapper);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>13,537,086,546,263,552通り</h1>
+    <label for="iframeCount">生成するiframeの個数:</label>
+    <input type="number" id="iframeCount" min="1" placeholder="個数を入力" />
+    <button onclick="createIframes()">生成</button>
+    <div id="iframeContainer" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;"></div>
+</body>
+</html>
